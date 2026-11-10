@@ -1,0 +1,662 @@
+<!doctype html>
+<html lang="zh-Hant">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#22483e">
+<meta name="description" content="12 道生活選擇題，找出你是 16 種搭檔裡的哪一種，帶走一張專屬的 AI 指令卡。">
+<title>搭檔圖鑑｜AI 協作性格測驗</title>
+<style>
+*{box-sizing:border-box}
+html{overflow-x:clip}
+body{margin:0;overflow-x:clip;background:#f5f2e8;color:#202d28;font:17px/1.65 "PingFang TC","Microsoft JhengHei",sans-serif}
+header,main,footer{max-width:1040px;margin:auto;padding:20px 6%}
+header{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #b5bbac;font-weight:800}
+header b{display:inline-block;background:#22483e;color:white;border-radius:9px;padding:1px 9px;margin-right:9px}
+header a,a{color:#21574c}
+main{padding-top:clamp(34px,7vw,80px);min-height:68vh}
+main:focus{outline:none}
+h1,h2,h3,p{margin:0 0 18px}
+h1,h2{font-family:"Songti TC","Noto Serif TC",serif;line-height:1.23}
+h1{font-size:clamp(40px,5.2vw,66px);letter-spacing:-.05em}
+h2{font-size:clamp(27px,4vw,44px)}
+h3{font-size:21px}
+p{max-width:40em}
+.hero{display:grid;grid-template-columns:1.3fr 1fr;gap:36px;align-items:center}
+.meta{color:#516957;font-size:14px;font-weight:bold;letter-spacing:.08em}
+.poster{background:#22483e;border-radius:100px 100px 14px 14px;color:#f8edb9;display:grid;grid-template-columns:1fr 1fr;aspect-ratio:1;align-content:center;justify-items:center;padding:13%;gap:12px;transform:rotate(3deg);box-shadow:7px 8px 0 #bfc9ac}
+.tile{background:#edb28d;color:#253c32;width:100%;aspect-ratio:1;display:grid;place-items:center;font:italic bold clamp(32px,5vw,62px) Georgia,serif;border-radius:50% 50% 4px 4px}
+.tile:nth-child(2){background:#e5dd93;border-radius:50%}
+.tile:nth-child(3){background:#b3ccee;border-radius:6px 55%}
+.tile:nth-child(4){background:#c4d9b0;border-radius:10px}
+button{font:inherit;font-weight:650;cursor:pointer;border-radius:9px;padding:12px 20px;background:#244d40;color:white;border:1px solid #244d40}
+button:hover{filter:brightness(1.08)}
+button:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid #b65529;outline-offset:3px}
+button:disabled{opacity:.45;cursor:default}
+.alt,.option{background:#fffcf2;color:#273c31}
+.option{display:block;width:100%;margin:12px 0;text-align:left;padding:20px;border-color:#aab5a4}
+.option[aria-pressed=true]{background:#dfebce;border-color:#244d40}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin:22px 0}
+progress{width:100%;accent-color:#446a49;height:8px;margin-bottom:26px}
+.box,blockquote{background:#fffcf2;border:1px solid #c6cbbd;border-radius:14px;padding:24px;margin:16px 0}
+small{color:#526251}
+footer{font-size:14px;color:#536458;border-top:1px solid #b5bbac;margin-top:40px}
+footer p{margin:12px 0}
+summary{cursor:pointer;font-weight:bold}
+textarea{display:block;width:100%;padding:12px;margin:8px 0 12px;border:1px solid #829483;border-radius:8px;font:inherit;color:inherit;background:#fffdf6;resize:vertical}
+.sect{margin-top:clamp(40px,6vw,64px)}
+.sect>.meta{margin-bottom:6px}
+
+/* the card people take home */
+.card{background:#22483e;color:#f3ecd2;border-radius:26px;padding:clamp(22px,4vw,44px);box-shadow:7px 8px 0 #bfc9ac;display:grid;grid-template-columns:auto 1fr;gap:clamp(18px,4vw,44px);align-items:center;print-color-adjust:exact;-webkit-print-color-adjust:exact}
+.card .top{grid-column:1/-1;display:flex;justify-content:space-between;font-size:14px;font-weight:bold;letter-spacing:.1em;color:#c4d9b0}
+.card .tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:clamp(150px,22vw,230px)}
+.card .tile{font-size:clamp(34px,5vw,58px)}
+.card h2{color:#f8edb9;font-size:clamp(36px,6vw,64px);margin-bottom:8px}
+.card .tag{font-size:clamp(18px,2.2vw,22px);font-weight:650;color:#f8edb9;margin-bottom:14px}
+.card p{color:#e6e2cc;margin-bottom:0}
+.card .axes{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:12px 36px;border-top:1px solid #46695d;padding-top:20px}
+.axis{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;font-size:14px;color:#a9bdaa}
+.axis span{white-space:nowrap}
+.axis .r{text-align:right}
+.axis .on{color:#f8edb9;font-weight:bold}
+.axis i{display:flex;gap:4px}
+.axis i u{width:16px;height:8px;border-radius:4px;background:#46695d}
+.axis i u.a{background:#edb28d}
+.axis i u.b{background:#b3ccee}
+.card .hint{grid-column:1/-1;font-size:13px;color:#a9bdaa;margin-top:-6px}
+
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.three .box{margin:0;border-top:5px solid #547856}
+.three .box.trap{border-top-color:#bc8159}
+.three .box.fix{border-top-color:#c6a45c;background:#fbf4dc}
+.three h3{font-size:15px;letter-spacing:.08em;color:#516957;margin-bottom:8px}
+.three p{margin:0}
+
+.demo{background:#e6edda;border-top:5px solid #547856}
+.demo details{margin-top:16px}
+.demo details p{margin-top:12px}
+.lines{list-style:none;margin:16px 0;padding:0;background:#fffcf2;border:1px solid #c6cbbd;border-radius:14px;overflow:hidden}
+.lines li{display:grid;grid-template-columns:104px 1fr;gap:14px;padding:14px 20px;border-top:1px solid #e3e3d3;align-items:baseline}
+.lines li:first-child{border-top:0}
+.lines em{font-style:normal;font-size:13px;font-weight:bold;letter-spacing:.04em;color:#516957}
+.lines li.g{background:#fbf4dc}
+.lines li.g em{color:#8a6a1f}
+.lines li.empty{display:block;color:#526251}
+
+.take{display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:center}
+.take canvas{width:148px;height:148px;background:white;border-radius:10px;border:1px solid #c6cbbd;display:block}
+.take .actions{margin:12px 0 4px}
+.take p{margin-bottom:8px}
+
+.dex{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.dex button{background:#fffcf2;color:#273c31;border-color:#c6cbbd;text-align:left;padding:12px 14px;line-height:1.35;position:relative}
+.dex button b{display:block;font:italic bold 20px Georgia,serif;color:#306348}
+.dex button span{font-size:15px}
+.dex button[aria-current=true]{background:#22483e;border-color:#22483e;color:#f8edb9}
+.dex button[aria-current=true] b{color:#f8edb9}
+.dex button.me::after{content:"你";position:absolute;top:8px;right:10px;font-size:12px;font-weight:bold;background:#edb28d;color:#253c32;border-radius:99px;width:22px;height:22px;display:grid;place-items:center}
+.browse{background:#fbf4dc;border:1px solid #d9c98f;border-radius:12px;padding:12px 18px;margin-bottom:20px;display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.printonly{display:none}
+.quip{color:#516957;font-weight:650;min-height:1.65em;margin:-8px 0 18px}
+.quip b{display:inline-block;background:#22483e;color:white;border-radius:8px;padding:0 7px;font-weight:800}
+#duo{margin-top:22px}
+#duo p{margin-bottom:8px}
+.card{position:relative}
+.bits{position:absolute;left:clamp(90px,16vw,160px);top:42%;pointer-events:none}
+.bits i{position:absolute;width:14px;height:14px;border-radius:50% 50% 2px 2px}
+.chat{background:#e6edda;border-radius:14px;padding:22px;min-height:230px;display:flex;flex-direction:column;gap:12px}
+.msg{display:flex;gap:10px;max-width:86%;align-items:flex-start}
+.msg span{background:#fffcf2;border:1px solid #c6cbbd;border-radius:4px 16px 16px 16px;padding:10px 16px}
+.msg b{flex:none;background:#22483e;color:white;border-radius:9px;width:32px;height:32px;display:grid;place-items:center;margin-top:5px}
+.msg.me{align-self:flex-end}
+.msg.me span{background:#22483e;border-color:#22483e;color:#f8edb9;border-radius:16px 4px 16px 16px}
+.msg mark{background:#e5dd93;color:#253c32;border-radius:5px;padding:1px 5px;font-weight:650;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.msg.aside{align-self:center;max-width:none;color:#6b5a3c;font-size:15px;text-align:center}
+.dots{display:flex;gap:5px;align-items:center;height:48px}
+.dots i{width:7px;height:7px;border-radius:50%;background:#516957}
+.dial{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:6px 0 4px}
+.dial button.tile{width:66px;padding:0;border:0;font-size:32px}
+.dial button.tile:active{transform:scale(.92)}
+.dial strong{margin-left:8px;font:bold 26px "Songti TC","Noto Serif TC",serif}
+
+@media (prefers-reduced-motion:no-preference){
+  .step{animation:rise .28s ease-out both}
+  .tile.lock{animation:pop .45s cubic-bezier(.2,1.6,.4,1)}
+  .rolling .tile:not(.lock){opacity:.6}
+  .rolling .who,.rolling .axes,.rolling .hint{opacity:0}
+  .landed .who{animation:rise .5s ease-out both}
+  .landed .axes,.landed .hint{animation:rise .5s .2s ease-out both}
+  .quip,.msg{animation:rise .3s ease-out both}
+  .bits i{animation:burst 1.3s cubic-bezier(.1,.7,.3,1) both}
+  .nudge{animation:nudge 1.1s ease-in-out 3}
+  .dots i{animation:blink 1s infinite}
+  .dots i:nth-child(2){animation-delay:.15s}
+  .dots i:nth-child(3){animation-delay:.3s}
+  @keyframes rise{from{opacity:0;transform:translateY(10px)}}
+  @keyframes pop{from{transform:rotate(-12deg) scale(.6)}}
+  @keyframes burst{from{opacity:1;transform:scale(.4)}70%{opacity:1}to{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(var(--r))}}
+  @keyframes nudge{50%{transform:translateY(-4px);box-shadow:0 0 0 4px #c6a45c}}
+  @keyframes blink{0%,60%,100%{opacity:.25}30%{opacity:1}}
+}
+@media(max-width:760px){
+  .three{grid-template-columns:1fr}
+  .card{grid-template-columns:1fr}
+  .card .tiles{grid-template-columns:repeat(4,1fr);width:100%;max-width:300px}
+  .card .axes{grid-template-columns:1fr}
+  .axis{grid-template-columns:1fr 1fr;gap:5px 10px}
+  .axis i{grid-column:1/-1;grid-row:2}
+  .axis i u{flex:1}
+  .dex{grid-template-columns:repeat(2,1fr)}
+  .lines li{grid-template-columns:1fr;gap:2px}
+}
+@media(max-width:650px){
+  .hero{display:flex;flex-direction:column;align-items:start}
+  .poster{width:160px;aspect-ratio:1;padding:18px;gap:7px;align-self:center}
+  .poster .tile{font-size:25px}
+  main{padding-top:32px}
+  .option{padding:15px}
+  .take{grid-template-columns:1fr}
+}
+@media print{
+  @page{size:A4;margin:12mm}
+  body{background:white;font-size:10.5pt;line-height:1.5}
+  header,main{padding:0;max-width:none}
+  header{display:none}
+  main{min-height:0}
+  button,footer,.actions,header a,#notice,#copied,.demo,.dexsect,.browse,.noprint{display:none!important}
+  .sect{margin-top:11px}
+  .sect>.meta{margin-bottom:2px}
+  .card{box-shadow:none;padding:20px 24px;gap:14px 28px;grid-template-columns:auto 1fr;border-radius:18px}
+  .card .tiles{width:120px;grid-template-columns:1fr 1fr}
+  .card .tile{font-size:30pt}
+  .card h2{font-size:30pt}
+  .card .axes{grid-template-columns:1fr 1fr;padding-top:12px;gap:10px 28px}
+  .axis{grid-template-columns:1fr 1fr;gap:4px 10px}
+  .axis i{grid-column:1/-1;grid-row:2}
+  .axis i u{flex:1;height:5px}
+  .axis i u,.tile{print-color-adjust:exact;-webkit-print-color-adjust:exact}
+  .three{grid-template-columns:repeat(3,1fr);gap:10px}
+  .box,.lines{break-inside:avoid}
+  .three .box{padding:12px}
+  .lines{margin:8px 0}
+  .lines li{padding:6px 14px;grid-template-columns:90px 1fr}
+  .lines li.g,.three .box.fix{print-color-adjust:exact;-webkit-print-color-adjust:exact}
+  h2{font-size:17pt;margin-bottom:6px}
+  h3{margin-bottom:6px}
+  p{max-width:none}
+  .take{grid-template-columns:auto 1fr;border:0;padding:0;margin:0;background:none;gap:14px}
+  .take canvas{width:25mm;height:25mm}
+  .printonly{display:block}
+  *{animation:none!important}
+}
+</style>
+<header><span><b>✳</b>搭檔圖鑑</span><a href="#sources" onclick="document.querySelector('#sources details').open=true">研究筆記</a></header>
+<main id="view" tabindex="-1"></main>
+<footer id="sources"><details><summary>研究筆記與測驗設計</summary>
+<p>2026 年 11 月 10 日查閱。Hacker News 的「規劃與執行分開」討論有 976 分、591 則留言。Reddit 的開發者也分享了分工、追問、獨立審稿，以及平行執行後來不及驗收的經驗。這些工程社群樣本只能反映討論熱度，無法推算各論壇的使用率排名。</p>
+<p><a href="https://news.ycombinator.com/item?id=47106686">Hacker News｜先規劃再執行</a> · <a href="https://www.reddit.com/r/ClaudeCode/comments/1wmax2u/">r/ClaudeCode｜訪談、拆任務與審查</a> · <a href="https://www.reddit.com/r/ClaudeAI/comments/1rwkecs/">r/ClaudeAI｜平行分工與驗收負擔</a> · <a href="https://research.google/blog/a-new-era-of-innovation-google-research-at-io-2026/">Google Research｜方案辯論的研究實例</a></p>
+<p>題目借用 <a href="https://www.myersbriggs.org/my-mbti-personality-type/the-mbti-preferences/">MBTI 四組偏好</a>設計，每組三題，多數選擇決定一個字母；三題全選同一邊標為「明顯」，二比一標為「略偏」。每組只有三題，一題就可能翻盤，所以結果描述的是這次作答的傾向。指令由四部分組成：中間兩個字母決定用法，第一個字母決定 AI 怎麼向你提問，最後一個字母決定怎麼收尾，十六型各有一句防踩坑的話。十六型的描述、強項和容易踩的坑是展場原創內容，尚未經心理計量驗證。答案只留在你的瀏覽器；結果連結和 QR 碼裡只有十二題的選擇，沒有你輸入的文字。</p>
+</details></footer>
+<script src="qrcode.js"></script>
+<script>
+const questions=[
+  ["你腦中有個點子，清楚程度大概只有三成。你會怎麼把它變清楚？","找人聽我講，講到一半通常就知道自己要什麼。","先寫一段亂七八糟的筆記，再整理給人看。","EI"],
+  ["朋友推薦一個你沒用過的東西。哪句話比較讓你想看下去？","「我昨天就靠它搞定這件事，我做給你看。」","「你有沒有想過，它還能拿來做這種事？」","SN"],
+  ["有人把兩個週末計畫丟進群組。你最想補問什麼？","各要花多少時間和錢？攤開來比較一下。","這次大家最想得到什麼？誰會玩得最開心？","TF"],
+  ["明天放假，一整天都空著。怎樣會讓你睡前最滿意？","已經挑好想去的地方，醒來就能出發。","留了幾個有意思的選項，醒來看心情挑。","JP"],
+  ["突然被問「你覺得呢？」你最希望對方接哪一句？","「不用急，你想一下，等會兒再說。」","「先講第一個念頭，我陪你接下去。」","IE"],
+  ["電鍋、吐司、一顆蛋。你想先翻哪一頁？","「同樣三樣東西，還能變出哪些意外組合？」","「十分鐘早餐：成品照片和三個步驟。」","NS"],
+  ["要替一位朋友選禮物，兩樣都在預算內。你靠什麼決定？","想到他拆開的那一刻，哪樣會讓他覺得被懂了？","把他說過的需求列出來，哪樣符合最多？","FT"],
+  ["簡報還有半小時才交，初稿已經能用了。你手又癢了，想做什麼？","試講另一個開場，說不定整份更好玩。","從頭跑一遍，把卡住的地方修完就交。","PJ"],
+  ["看完一部結局很怪的電影，你最想做什麼？","立刻找人交換解讀，聽到別人的說法才更有意思。","回想前面的幾個鏡頭，先拼出自己的版本。","EI"],
+  ["你第一次接手一件陌生工作，桌上有兩份資料。你先開哪份？","前一次交出去的成品，看看要做到什麼程度。","整個計畫的草圖，看看這件事跟其他事情怎麼連起來。","SN"],
+  ["兩個提案都很吸引你。哪個問題更能幫你做最後決定？","如果最重要的假設錯了，哪個方案還站得住腳？","如果真的做下去，對最受影響的人有什麼意義？","TF"],
+  ["合作夥伴說「今天先到這」。你希望桌上留下什麼？","一個決定，還有明天打開電腦就能做的第一步。","兩個值得試的方向，先做點小實驗再選。","JP"]
+];
+const label={E:'邊談邊想',I:'先獨自整理',S:'關注具體細節',N:'探索關聯與可能',T:'依準則判斷',F:'重視人的感受與價值',J:'先定下計畫',P:'保留調整空間'};
+const PAIRS=['EI','SN','TF','JP'];
+
+// The sixteen. you = what they are like; power = what that gives them when directing an AI;
+// trap = where it goes wrong; guard = the sentence added to their prompt to stop it.
+const TYPES={
+ ISTJ:{name:'驗收官',tag:'規格寫清楚，照表一項一項驗。',
+  you:'你相信寫下來的東西。答應的事會做到，也期待別人照說好的來。',
+  power:'你給的需求最完整，AI 幾乎不用猜。',
+  trap:'規格定得太早。AI 照做完了，你才發現一開始的方向就該先問一問。',
+  guard:'動手前，先指出我的要求裡你覺得最可疑的一項，等我確認再開始。'},
+ ISFJ:{name:'守護管家',tag:'記得每個人的習慣，把細節默默顧好。',
+  you:'你留意身邊的人需要什麼，事情交到你手上就很安心。你不喜歡麻煩別人。',
+  power:'你給的背景都是真實的人和事，AI 寫出來的東西有溫度。',
+  trap:'結果差一點，你就自己默默改完。AI 不知道哪裡不對，下次照樣錯。',
+  guard:'交稿後請問我：哪一句最不像我會說的話？依我的回答再改一版。'},
+ INFJ:{name:'引路人',tag:'看得見別人沒說出口的那件事。',
+  you:'你在意一件事的意義，想得深也想得遠。別人還在講表面，你已經在想背後的原因。',
+  power:'你會把「為什麼要做」講清楚，AI 抓得到核心。',
+  trap:'你期待 AI 讀懂你沒寫出來的意思。它交的東西對題，卻不對味。',
+  guard:'動手前，用你的話說一遍你認為我真正在意什麼，我說對了再開始。'},
+ INTJ:{name:'總設計師',tag:'腦中早有藍圖，已經想到三步之後。',
+  you:'你習慣先看整體再動手，標準很高，不喜歡做白工。',
+  power:'你給的目標和限制都清楚，AI 能做出結構完整的東西。',
+  trap:'藍圖都在你腦子裡。沒說出口的假設 AI 補不了，它提的異議你也常直接略過。',
+  guard:'先說出我的計畫最可能失敗的一個原因，我回應之後再動手。'},
+ ISTP:{name:'拆解技師',tag:'話不多，動手試了就知道。',
+  you:'你喜歡弄懂東西怎麼運作，遇到問題先拆開來看。比起討論，你更相信試出來的結果。',
+  power:'你會拿結果來測 AI，不會被漂亮的說法帶走。',
+  trap:'你的指令短到只有自己看得懂，AI 只能猜背景。',
+  guard:'我的說明如果少了背景，先列出你做了哪些假設，再開始做。'},
+ ISFP:{name:'手感職人',tag:'對不對，你一看就知道。',
+  you:'你靠感覺判斷好壞，在意東西有沒有自己的味道。你不愛解釋，喜歡直接做給人看。',
+  power:'你對成品很敏銳，一眼就挑得出不對的地方。',
+  trap:'你只說「感覺不對」。AI 不知道往哪裡改，改了三版還在原地。',
+  guard:'我說不對的時候，給我兩個方向相反的版本，讓我指出哪個比較接近。'},
+ INFP:{name:'故事採集者',tag:'真誠的東西，你才收。',
+  you:'你有自己的價值和想像的世界。一件事要對得起自己的心，你才願意投入。',
+  power:'你給的素材帶著個人的故事，AI 寫出來不像範本。',
+  trap:'你不好意思退稿。AI 寫得太官腔，你也收下，然後自己重寫一遍。',
+  guard:'一次給我兩種語氣的版本，並問我哪一句讀起來最假。'},
+ INTP:{name:'原理偵探',tag:'一定要知道背後為什麼。',
+  you:'你喜歡把概念拆開再拼回去，對推論裡的漏洞特別敏感。',
+  power:'你會追問推論的過程，AI 很難含糊帶過。',
+  trap:'你越問越深。半小時後，已經忘了原本要交什麼。',
+  guard:'我離題超過兩輪時，提醒我原本的目標，問我要繼續挖還是回來收尾。'},
+ ESTP:{name:'快攻手',tag:'先做再說，邊做邊調。',
+  you:'你反應快，喜歡當場解決問題。等待和開會最讓你坐不住。',
+  power:'你來回的速度快，幾輪就把東西磨出來。',
+  trap:'第一版看起來能用，你就拿去用了，裡面的事實沒查過。',
+  guard:'交稿時標出你最不確定的兩處，告訴我各要怎麼查證。'},
+ ESFP:{name:'氣氛擔當',tag:'有你在，事情就變好玩。',
+  you:'你喜歡當下的互動和真實的反應，很會帶動場面。',
+  power:'你敢丟天馬行空的要求，AI 的創意是被你逼出來的。',
+  trap:'聊得很開心，聊完卻沒留下可以用的東西。',
+  guard:'每聊三輪，替我整理一次：目前決定了什麼，還缺什麼。'},
+ ENFP:{name:'靈感煙火手',tag:'點子一個接一個，停不下來。',
+  you:'你對什麼都好奇，很會把人拉進來一起玩。你總是先看見一件事可以變成什麼。',
+  power:'你給 AI 的起點最多，最容易碰出意外的好東西。',
+  trap:'你同時開十個話題，每個都停在三成。',
+  guard:'我丟新點子時先記進待辦清單，把手上這件做到能交，再問我要不要換。'},
+ ENTP:{name:'點子辯士',tag:'換個角度，再吵一輪。',
+  you:'你喜歡抬槓和挑戰既定的說法，新想法來得很快。',
+  power:'你會讓 AI 站到反方，把方案的弱點都逼出來。',
+  trap:'辯得過癮，方案換了五個，沒有一個做完。',
+  guard:'每辯完一輪，要我選一個方案並說出理由。我沒選，就別開新題。'},
+ ESTJ:{name:'現場指揮',tag:'拆成清單，盯到做完。',
+  you:'你習慣排好順序、分好工作，事情到你手上就會往前走。',
+  power:'你分派任務很明快，AI 知道做到哪裡才算完成。',
+  trap:'你下指令太快，只說了做什麼。AI 準時交件，東西卻不合用。',
+  guard:'開始前，用一句話複述這件事的目的。我的做法如果達不到目的，請直說。'},
+ ESFJ:{name:'聚會召集人',tag:'每個人都要被照顧到。',
+  you:'你很快讀懂場面，知道誰需要什麼。大家開心，你才放心。',
+  power:'你會告訴 AI 對象是誰、場合是什麼，語氣很少出錯。',
+  trap:'你想顧到每個人，要求互相打架。AI 交出一份誰都不得罪、也沒有重點的東西。',
+  guard:'我的要求如果互相衝突，請指出來，要我選出最重要的一項。'},
+ ENFJ:{name:'領隊教練',tag:'看得到別人的潛力，帶著大家走。',
+  you:'你擅長鼓勵人，說的話讓人想跟。你在意每個人有沒有一起往前。',
+  power:'你會告訴 AI 要打動誰、希望對方看完做什麼。',
+  trap:'你已經替 AI 把答案想好了。它只是照抄你的想法，沒帶來新東西。',
+  guard:'先別照我的方向寫。給我一個我沒想到的角度，說明它對那個人有什麼好處。'},
+ ENTJ:{name:'戰略總監',tag:'定目標、分資源、往前推。',
+  you:'你看的是大局和結果，習慣替事情做決定，不怕扛責任。',
+  power:'你會同時開好幾條線讓 AI 做，產出很多。',
+  trap:'線開得太多，你來不及驗收，沒看過的成果就拿去用在下一步。',
+  guard:'每份成果附三行摘要，和一個我該親自檢查的地方。我沒確認，就別進下一步。'}
+};
+const ORDER=Object.keys(TYPES);
+
+// The trap, acted out: what they type, what comes back, and what comes back with their guard sentence added.
+const SCENES={
+ ISTJ:{say:'照這份十二條規格，寫一份週年活動企劃。',bad:'完成了，十二條全部符合。順帶一提，第三條的活動日期是去年的。',aside:'（企劃已經寄出去了。）',good:'開始前先問一件事：第三條的活動日期是去年的。要照寫，還是你要先改？'},
+ ISFJ:{say:'幫我寫給阿姨的生日祝福。',bad:'祝您福如東海，壽比南山，松鶴長春！',aside:'（你說了謝謝，然後自己重寫了四十分鐘。）',good:'寫好了。問你一句：哪一句最不像你會跟阿姨說的話？我照你的回答改。'},
+ INFJ:{say:'幫我寫一段話，給要離職的同事。',bad:'祝你鵬程萬里，前程似錦！',aside:'（你真正想說的是「謝謝你那次幫我擋下來」。但你沒寫。）',good:'動手前先確認：你真正想讓他知道的，是你會記得他幫過你，對嗎？'},
+ INTJ:{say:'照我的三階段計畫，排出時程。',bad:'排好了。第二階段要用的資料，第三階段才會產生。我想您應該另有安排。',aside:'（沒有另外安排。）',good:'動手前先說一個風險：第二階段要用的資料，第三階段才會產生。要調順序嗎？'},
+ ISTP:{say:'修一下。',bad:'好的！我猜是您的印表機。以下是三千字的保養指南。',aside:'（你要修的是一段程式。）',good:'我先列假設：一、你說的是剛貼的那段程式。二、問題在第 12 行。不對的話請叫停。'},
+ ISFP:{say:'這張海報感覺不對，再改。',bad:'好的，這是第七版。我把藍色調得更藍了一點。',aside:'（還是不對。）',good:'給你兩個相反的方向。甲：大量留白、字很小。乙：整張塞滿、字很大。哪個比較接近？'},
+ INFP:{say:'幫我寫社團的招生文。',bad:'誠摯邀請各界菁英蒞臨指導，共襄盛舉！',aside:'（你說「很棒，謝謝」，然後關掉視窗自己寫。）',good:'兩種語氣各寫了一版。另外問你：哪一句讀起來最假？'},
+ INTP:{say:'幫我訂會議室。對了，為什麼會議室都從整點開始借？',bad:'好問題！這要從十九世紀的鐵路時刻表說起……',aside:'（四十分鐘後，會議室被別人訂走了。）',good:'這題可以聊很久。先提醒：你原本是要訂會議室。先訂，還是先聊？'},
+ ESTP:{say:'給我一段開場白，要引用一個數據。快。',bad:'「研究顯示，87% 的聽眾喜歡有數據的開場。」',aside:'（你直接上台講了。這個數字沒有出處。）',good:'寫好了。有兩處我不確定：87% 這個數字我沒有來源，講者頭銜也是我猜的。查證方式寫在後面。'},
+ ESFP:{say:'我們來想尾牙表演！',bad:'好耶！可以噴乾冰！再牽一匹真的馬上台！',aside:'（聊了兩個小時。表演內容：未定。）',good:'第三輪小結。已經決定：要唱歌、不要馬。還缺：誰唱、唱哪一首。'},
+ ENFP:{say:'幫我想咖啡店的名字。啊，還有 logo。不然乾脆開書店？',bad:'沒問題！以下是咖啡店名、logo 方向、書店企劃，還有您沒提到的露營區，各完成三成。',aside:'（每一份都很有潛力。）',good:'書店和 logo 我先記進待辦清單。咖啡店名只差最後一步：這三個裡選一個？'},
+ ENTP:{say:'你站反方，說服我不要搬去台南。',bad:'好，第五輪。這一次我主張您應該搬去澎湖。',aside:'（原本的問題是要不要搬去台南。還沒有答案。）',good:'這一輪辯完了。請選：搬或不搬，說一個理由。你沒選，我就不開下一題。'},
+ ESTJ:{say:'做一張報名表，今天五點前給我。',bad:'四點五十八分完成。姓名、電話、地址、身分證字號、血型，共四十二欄。',aside:'（這是公司烤肉的報名表。）',good:'我先複述目的：讓同事三十秒內報名烤肉。那只要姓名和葷素兩欄，對嗎？'},
+ ESFJ:{say:'聚餐地點：小陳要吃辣，阿美不吃辣，老王想省錢，主管想要氣派。',bad:'推薦：微辣不辣平價頂級自助餐。（查無此餐廳。）',aside:'（大家都說好。沒有人訂得到位。）',good:'這四個要求有兩組互相衝突：辣和不辣、省錢和氣派。請選最重要的一項，其他的我盡量顧。'},
+ ENFJ:{say:'幫我寫鼓勵新人的話。重點：你很有潛力、慢慢來、大家都在。',bad:'你很有潛力。慢慢來。大家都在。',aside:'（它把你說的三句話還給你了。）',good:'先不照你的三點寫。給你一個沒提到的角度：說說你自己第一個月搞砸過什麼。新人最怕的是只有自己出錯。'},
+ ENTJ:{say:'同時做：市場分析、競品報告、簡報、預算表、新聞稿。',bad:'五份都完成了！',aside:'（你把沒看過的預算表直接貼進簡報。裡面的單位是日圓。）',good:'市場分析完成，三行摘要在上面。請你親自檢查一處：幣別我用的是日圓。你確認後，我才做下一份。'}
+};
+// What ✳ says after each choice. Never names a letter.
+const QUIPS=[
+ ['我可以當那個聽你講的人。','亂七八糟的筆記也可以貼給我，我不介意。'],
+ ['眼見為憑。記下來了。','你喜歡被問「有沒有想過」。記下來了。'],
+ ['需要比較表的時候，叫我。','先想到人。這個我學起來。'],
+ ['連放假都排好了，佩服。','醒來再說。聽起來很舒服。'],
+ ['好，我等你。我很會等。','好，想到什麼就丟過來。'],
+ ['吐司放進電鍋，其實可以。','十分鐘吃到早餐，很實在。'],
+ ['你送禮物一定很厲害。','你連朋友說過什麼都記得。'],
+ ['只剩半小時耶。你膽子不小。','交了就是交了，乾淨俐落。'],
+ ['下次看完，可以來找我吵。','想好了再告訴我你的版本。'],
+ ['先看要做到什麼程度，合理。','先知道自己在地圖的哪裡。'],
+ ['你會先找最弱的那塊踩踩看。','你會先想到被影響的人。'],
+ ['明天的你會感謝今天的你。','先試再選，不急著定。']
+];
+// Two people and one AI.
+const DUO=[
+ ['反轉搭檔','四個字母全部相反。你漏掉的，他剛好都會看到。'],
+ ['磨合搭檔','一開始會覺得對方很怪。撐過去，成品比各自做的好。'],
+ ['互補搭檔','一半像、一半不像，剛好互相補位。'],
+ ['默契搭檔','大部分的事不用解釋，只有一個地方要多講兩句。'],
+ ['鏡子搭檔','你們會踩進同一個坑，還互相說「沒問題啊」。請 AI 專門唱反調。']
+];
+const DUO_DIFF={
+ EI:'一個想邊講邊改，一個想先自己想完。各自跟 AI 聊十分鐘，再把兩份放在一起。',
+ SN:'一個管細節，一個管方向。讓 N 先跟 AI 發想，S 再叫 AI 逐條檢查。',
+ TF:'一個看站不站得住腳，一個看對人好不好。兩個問題都丟給 AI，各要一個答案。',
+ JP:'一個想定案，一個想再看看。讓 J 訂截止時間，在那之前 P 可以叫 AI 多試一條路。'
+};
+const DUO_SAME={
+ E:'兩個都愛邊講邊想。請 AI 當記錄，不然講完沒人記得結論。',
+ I:'兩個都先自己想。約好時間交換，不然會各做一份一樣的。',
+ S:'兩個都看細節。記得請 AI 提一個你們沒想過的做法。',
+ N:'兩個都愛想新點子。指定 AI 當那個問「所以第一步是什麼」的人。',
+ T:'兩個都講道理。請 AI 扮收到成品的人，說說他的感受。',
+ F:'兩個都顧感受。請 AI 當那個說實話的，指出最弱的一點。',
+ J:'兩個都想快點定案。定案前請 AI 多給一個選項，看一眼再決定。',
+ P:'兩個都想保留彈性。請 AI 每次結束時逼你們選一個。'
+};
+
+const recipes={
+ ST:{title:'把 AI 當第二位審稿人',fit:'你習慣看具體細節，再用準則判斷。手上有草稿時，可以把逐項核對交給 AI。',example:'我想寄出這封通知：「明晚七點到老地方集合。」三位新同事第一次參加。',demo:'審稿回條：「明晚」缺日期，「老地方」缺地址。寄出前先補這兩項。',instruction:'先分清原文和我的背景資料。從收件人的角度逐條審查，引用原句、指出缺漏，列出有依據的修改。未知資料請留空，再交一份修訂草稿。'},
+ SF:{title:'讓 AI 整理不同人的聲音',fit:'你留意實際發生的事，也在意每個人的處境。把原話交給 AI，請它找出各方都能接受的一步。',example:'週末聚餐，小林說「我八點要接小孩」，小余說「我七點才下班」，阿凱說「我想跟大家都聊到」。',demo:'共同時段可能在七到八點。先問小林最晚幾點得離席、小余最快幾點能到，再選方便兩人抵達的地點。',instruction:'從我提供的原話整理每個人的需要，區分已知條件與你的推測。找出一個能兼顧大家的做法，給我一句可以直接發給大家確認的話。'},
+ NT:{title:'請兩個 AI 方案互挑漏洞',fit:'你喜歡探索不同可能，也想知道推論站不站得住腳。當你有兩條路可選，讓 AI 替反方認真辯護。',example:'我每天只有二十分鐘練英文。該跟 AI 對話，還是跟讀一小段影片？我想在出國時敢開口。',demo:'跟讀派問：「自由對話時，你怎麼發現自己一直用錯同一句？」對話派問：「拿掉字幕，你還說得出來嗎？」可以各試十分鐘，再不用稿點一次餐。',instruction:'讓甲、乙各提出一個做法，交代各自成立的條件，再互相指出一個最可能踩到的坑。給我一個低成本的小實驗，讓我用結果選擇。'},
+ NF:{title:'請 AI 先採訪你，再一起想點子',fit:'你常從可能性出發，也在意一件事對人的意義。當想法還很模糊，讓 AI 用訪談找出你真正在乎的事。',example:'我想替一個不喜歡當眾被慶生的朋友過生日，又希望他知道大家很在乎他。',demo:'採訪者的第一問：「你記得哪一次，他收到一點心意之後，過了幾天還主動提起？」等你回答，再從那個細節發想。',instruction:'請先當訪談者，釐清對象、期待和顧慮。等收到我的回答，再提出兩種做法，說明各用了我提到的哪個細節。'}
+};
+const ASK={E:'需要我補充時，一次問我一題，等我回覆。',I:'需要我補充時，把關鍵問題整理在一起，讓我一次寫完。'};
+const END={J:'最後列出我可以立刻做的第一步，以及完成條件。',P:'最後保留可調整的選項，說明看到什麼結果時值得換方向。'};
+
+const view=document.querySelector('main');
+let answers=[],step=0,shown=null,timers=[],quip='',friend='',scene=0;
+const later=(f,ms)=>{const t=setTimeout(f,ms);timers.push(t);return t};
+const every=(f,ms)=>{const t=setInterval(f,ms);timers.push(t);return t};
+const calm=()=>matchMedia('(prefers-reduced-motion:reduce)').matches;
+const done=()=>answers.length===12&&answers.every(v=>v===0||v===1);
+const no=t=>String(ORDER.indexOf(t)+1).padStart(2,'0');
+
+function show(html,hash){
+  timers.forEach(clearTimeout);timers=[];scene++;
+  view.innerHTML=html;view.focus({preventScroll:true});window.scrollTo(0,0);
+  if(hash!==undefined&&location.hash!==hash)history.replaceState(null,'',hash||location.pathname+location.search);
+}
+function start(){answers=[];step=0;quip='沒有標準答案，選比較像你的那個。';question()}
+function home(){
+  shown=null;
+  show('<div class="hero step"><section><p class="meta">AI 協作性格測驗</p><h1>你的 AI，<br>該當哪種搭檔？</h1><p>你想讓 AI 陪你想、幫你查，還是專門挑你的漏洞？選十二個生活裡的小決定，看看你是十六種搭檔裡的哪一種，再帶走一張寫給你的 AI 指令卡。</p><button onclick="start()">找我的搭檔　→</button><p><small>12 道選擇題・約 3 分鐘・16 種搭檔</small></p></section><div class="poster" aria-hidden="true"><i class="tile">E</i><i class="tile">N</i><i class="tile">F</i><i class="tile">P</i></div></div>','');
+  if(!calm())every(()=>{
+    const t=ORDER[Math.floor(Math.random()*16)];
+    document.querySelectorAll('.poster .tile').forEach((el,i)=>later(()=>{el.textContent=t[i];el.classList.remove('lock');void el.offsetWidth;el.classList.add('lock')},i*120));
+  },2800);
+}
+function question(){
+  const q=questions[step];
+  show('<div class="step"><p class="meta">生活裡的選擇　'+(step+1)+' / 12</p><progress max="12" value="'+(step+1)+'"></progress><p class="quip" id="quip" aria-live="polite"><b>✳</b>　'+quip+'</p><h2>'+q[0]+'</h2>'
+    +[0,1].map(i=>'<button class="option" aria-pressed="'+(answers[step]===i)+'" onclick="pick('+i+')">'+q[i+1]+'</button>').join('')
+    +'<div class="actions"><button class="alt" onclick="back()">← 上一步</button><button id="next" onclick="forward()" '+(answers[step]==null?'disabled':'')+'>'+(step===11?'看我的結果':'下一題')+' →</button></div></div>','');
+}
+function pick(i){
+  const first=answers[step]==null;
+  answers[step]=i;
+  document.querySelectorAll('.option').forEach((b,j)=>b.setAttribute('aria-pressed',i===j));
+  document.querySelector('#next').disabled=false;
+  quip=QUIPS[step][i];
+  if(first&&step<11)later(forward,340);   // a changed answer waits for the button
+  else document.querySelector('#quip').innerHTML='<b>✳</b>　'+quip;
+}
+function back(){if(step===0)home();else{step--;question()}}
+function forward(){if(answers[step]==null)return;if(step===11)result();else{step++;question()}}
+function profile(choices){
+  const votes={};
+  choices.forEach((v,i)=>{const k=questions[i][3][v];votes[k]=(votes[k]||0)+1});
+  return {type:PAIRS.map(p=>(votes[p[0]]||0)>=2?p[0]:p[1]).join(''),votes};
+}
+
+// Her prompt, a line at a time, each with the letter it comes from.
+function promptLines(type,task){
+  const pair=type.slice(1,3);
+  return [
+    ['你的事',task],
+    [pair[0]+'＋'+pair[1]+'　用法',recipes[pair].instruction],
+    [type[0]+'　怎麼問你',ASK[type[0]]],
+    ['防踩坑',TYPES[type].guard,'g'],
+    [type[3]+'　怎麼收尾',END[type[3]]]
+  ];
+}
+function updatePrompt(){
+  const task=document.querySelector('#task').value.trim(),box=document.querySelector('#prompt');
+  box.textContent='';
+  if(task)promptLines(shown.type,task).forEach(([why,text,cls])=>{
+    const li=document.createElement('li'),em=document.createElement('em'),s=document.createElement('span');
+    if(cls)li.className=cls;em.textContent=why;s.textContent=text;li.append(em,s);box.append(li);
+  });
+  else{const li=document.createElement('li');li.className='empty';li.textContent='先寫一件想請 AI 幫忙的事，或放回範例。';box.append(li)}
+  document.querySelector('#copy').disabled=!task;
+  document.querySelector('#copied').textContent='';
+}
+function useExample(){document.querySelector('#task').value=recipes[shown.type.slice(1,3)].example;updatePrompt()}
+function promptText(){const task=document.querySelector('#task').value.trim();return promptLines(shown.type,task).map(l=>l[1]).join('\n')}
+
+function axesHtml(type,votes){
+  return PAIRS.map((p,i)=>{
+    const a=votes[p[0]]||0,won=type[i],n=votes[won];
+    return '<div class="axis"><span class="'+(won===p[0]?'on':'')+'">'+p[0]+'　'+label[p[0]]+'</span><i role="img" aria-label="'+won+' '+n+' 比 '+(3-n)+'，'+(n===3?'明顯':'略偏')+'">'
+      +[0,1,2].map(j=>'<u class="'+(j<a?'a':'b')+'"></u>').join('')+'</i><span class="r '+(won===p[1]?'on':'')+'">'+label[p[1]]+'　'+p[1]+'</span></div>';
+  }).join('');
+}
+function shareUrl(){return location.href.split('#')[0]+(shown.votes?'#r='+answers.join(''):'#t='+shown.type)}
+
+function result(){const p=profile(answers);render(p.type,p.votes,true)}
+function browse(type){render(type,done()&&profile(answers).type===type?profile(answers).votes:null,false)}
+function render(type,votes,reveal){
+  const t=TYPES[type],recipe=recipes[type.slice(1,3)],mine=done()?profile(answers).type:null;
+  shown={type,votes};
+  const close=votes?PAIRS.map((p,i)=>votes[type[i]]===2?type[i]:'').filter(Boolean):[];
+  show(
+   (votes?'':'<div class="browse"><span>你正在翻圖鑑：這是 '+type+' 的卡。</span>'+(mine?'<button onclick="result()">回到我的結果</button>':'<button onclick="start()">做測驗，找我的搭檔 →</button>')+'</div>')
+  +`<section class="card">
+     <div class="top"><span>✳ 搭檔圖鑑</span><span>No.${no(type)} / 16</span></div>
+     <div class="tiles" aria-hidden="true">${[...type].map(k=>'<i class="tile">'+k+'</i>').join('')}</div>
+     <div class="who"><h2>${t.name}</h2><p class="tag">${type}　·　${t.tag}</p><p>${t.you}</p></div>
+     ${votes?'<div class="axes">'+axesHtml(type,votes)+'</div><p class="hint">'+(close.length?close.join('、')+' 只贏一題，是「略偏」：換個情境，你可能會選另一邊。':'四組都是三題全選同一邊，傾向很明顯。')+'</p>':''}
+   </section>
+
+   <section class="sect"><p class="meta">${votes?'你':'這一型'}指揮 AI 的方式</p>
+   <div class="three">
+     <div class="box"><h3>強項</h3><p>${t.power}</p></div>
+     <div class="box trap"><h3>容易踩的坑</h3><p>${t.trap}</p></div>
+     <div class="box fix"><h3>加這一句就避開</h3><p>「${t.guard}」</p></div>
+   </div></section>
+
+   <section class="sect noprint"><p class="meta">踩坑現場</p><h2>這一幕，${votes?'你':'他'}看過嗎？</h2>
+   <div class="chat" id="chat" aria-live="polite"></div>
+   <div class="actions"><button id="fix" onclick="playScene(true)">加上那一句，再演一次</button><button class="alt" onclick="playScene(false)">重播原本的</button></div></section>
+
+   <section class="sect"><p class="meta">推薦的起手式</p><h2>${recipe.title}</h2><p>${recipe.fit}</p>
+   <div class="box demo"><h3>拿一件事試試</h3><label for="task">用下面的例子，或換成你自己的事。</label><textarea id="task" rows="3" oninput="updatePrompt()"></textarea>
+   <button class="alt" onclick="useExample()">放回範例</button><details><summary>看看原範例的一種回應</summary><p>${recipe.demo}</p></details></div>
+   <h3>你的專屬指令</h3><p class="noprint"><small>每一行都來自你的一個字母。整段複製，貼給你常用的 AI。</small></p>
+   <ol class="lines" id="prompt"></ol>
+   <div class="actions"><button id="copy" onclick="copyPrompt()">複製我的指令</button></div><span role="status" id="copied"></span></section>
+
+   <section class="sect"><p class="meta noprint">帶走這張卡</p>
+   <div class="box take"><canvas id="qr" width="296" height="296" role="img" aria-label="這個結果的 QR 碼"></canvas>
+     <div><p class="noprint"><strong>用手機掃 QR 碼，把這一頁帶走。</strong>連結裡只有你的十二個選擇。</p><p class="printonly"><strong>掃 QR 碼回到這一頁</strong>，換成你自己的事，複製指令貼給 AI。</p>
+     <div class="actions"><button onclick="saveCard()">存成圖片</button><button class="alt" onclick="window.print()">列印搭檔卡</button><button class="alt" onclick="copyLink()">複製連結</button></div>
+     <span role="status" id="notice"></span></div>
+   </div></section>
+
+   <section class="sect noprint"><p class="meta">朋友合體</p><h2>${votes?'你':t.name}加一個朋友，再加一個 AI</h2><p>點字母，轉出朋友的型。${votes?'他還不知道自己是哪一型？把 QR 碼給他掃。':''}</p>
+   <div class="dial">${[0,1,2,3].map(i=>'<button class="tile" onclick="flip('+i+')" aria-label="換掉朋友的第 '+(i+1)+' 個字母"></button>').join('')}<strong id="fname"></strong></div>
+   <div id="duo"></div></section>
+
+   <section class="sect dexsect"><p class="meta">搭檔圖鑑</p><h2>十六種搭檔</h2><p>點一張看看別人怎麼指揮 AI。跟你合作的人是哪一種？</p>
+   <div class="dex">${ORDER.map(k=>'<button class="'+(k===mine?'me':'')+'" aria-current="'+(k===type)+'" onclick="'+(k===mine?'result()':"browse('"+k+"')")+'"><b>'+k+'</b><span>'+TYPES[k].name+'</span></button>').join('')}</div>
+   <div class="actions"><button class="alt" onclick="start()">${mine?'再玩一次':'做測驗'}</button></div></section>`,
+   votes?'#r='+answers.join(''):'#t='+type);
+  useExample();
+  drawQr(document.querySelector('#qr'),shareUrl());
+  friend=[...type].map((k,i)=>PAIRS[i].replace(k,'')).join('');
+  drawDuo();
+  const chat=document.querySelector('#chat');
+  if('IntersectionObserver' in window){const io=new IntersectionObserver(es=>{if(es[0].isIntersecting){io.disconnect();playScene(false)}},{threshold:.5});io.observe(chat)}
+  else playScene(false);
+  if(reveal&&!calm())roll(type);
+}
+
+// The reveal: each letter spins between its two sides, then they land one at a time.
+function roll(type){
+  const card=document.querySelector('.card');
+  card.classList.add('rolling');
+  card.querySelectorAll('.tile').forEach((el,i)=>{
+    let n=0;const spin=every(()=>{el.textContent=PAIRS[i][n++%2]},85);
+    later(()=>{
+      clearInterval(spin);el.textContent=type[i];el.classList.add('lock');
+      if(i===3)later(()=>{card.classList.remove('rolling');card.classList.add('landed');confetti(card)},260);
+    },650+i*400);
+  });
+}
+function confetti(card){
+  const box=document.createElement('div'),colors=['#edb28d','#e5dd93','#b3ccee','#c4d9b0'],shapes=['50% 50% 2px 2px','50%','2px 55%','3px'];
+  box.className='bits';box.setAttribute('aria-hidden','true');
+  for(let i=0;i<26;i++){
+    const b=document.createElement('i'),a=Math.random()*Math.PI*2,d=110+Math.random()*190;
+    b.style.cssText='background:'+colors[i%4]+';border-radius:'+shapes[i%4]+';--dx:'+Math.round(Math.cos(a)*d)+'px;--dy:'+Math.round(Math.sin(a)*d*.7-40)+'px;--r:'+Math.round(Math.random()*500-250)+'deg;animation-delay:'+(Math.random()*.12).toFixed(2)+'s';
+    box.append(b);
+  }
+  card.append(box);later(()=>box.remove(),1600);
+}
+
+function playScene(fixed){
+  const box=document.querySelector('#chat'),sc=SCENES[shown.type],run=++scene,fix=document.querySelector('#fix');
+  const add=(cls,html)=>{const d=document.createElement('div');d.className='msg '+cls;d.innerHTML=html;box.append(d);return d};
+  let ai;
+  box.textContent='';fix.classList.remove('nudge');
+  [[0,()=>add('me','<span>'+sc.say+(fixed?' <mark>'+TYPES[shown.type].guard+'</mark>':'')+'</span>')],
+   [600,()=>{ai=add('ai','<b>✳</b><span class="dots"><i></i><i></i><i></i></span>')}],
+   [1700,()=>{const s=ai.querySelector('span');s.className='';s.textContent=fixed?sc.good:sc.bad}],
+   [2900,()=>{add('aside',fixed?'（這一次，不用重來。）':sc.aside);if(!fixed)fix.classList.add('nudge')}]
+  ].forEach(([ms,f])=>calm()?f():later(()=>run===scene&&f(),ms));
+}
+
+function flip(i){
+  const a=[...friend];a[i]=PAIRS[i].replace(a[i],'');friend=a.join('');
+  const el=document.querySelectorAll('.dial .tile')[i];el.classList.remove('lock');void el.offsetWidth;el.classList.add('lock');
+  drawDuo();
+}
+function drawDuo(){
+  const me=shown.type,same=[...me].filter((k,i)=>k===friend[i]).length;
+  document.querySelectorAll('.dial .tile').forEach((el,i)=>el.textContent=friend[i]);
+  document.querySelector('#fname').textContent=TYPES[friend].name;
+  document.querySelector('#duo').innerHTML='<h3>'+TYPES[me].name+' × '+TYPES[friend].name+'：'+DUO[same][0]+'</h3><p>'+DUO[same][1]+'</p><ol class="lines">'
+    +PAIRS.map((p,i)=>'<li><em>'+me[i]+(me[i]===friend[i]?' ＝ ':' × ')+friend[i]+'</em><span>'+(me[i]===friend[i]?DUO_SAME[me[i]]:DUO_DIFF[p])+'</span></li>').join('')+'</ol>';
+}
+
+function qrModules(text){
+  if(typeof qrcode!=='function')return null;
+  try{const q=qrcode(0,'M');q.addData(text);q.make();return q}catch{return null}
+}
+function paintQr(ctx,q,x,y,size){
+  const n=q.getModuleCount(),quiet=2,cell=size/(n+quiet*2);
+  ctx.fillStyle='#fff';ctx.fillRect(x,y,size,size);ctx.fillStyle='#1c2b25';
+  for(let r=0;r<n;r++)for(let c=0;c<n;c++)if(q.isDark(r,c))
+    ctx.fillRect(Math.round(x+(c+quiet)*cell),Math.round(y+(r+quiet)*cell),Math.ceil(cell),Math.ceil(cell));
+}
+function drawQr(canvas,text){
+  const q=qrModules(text);
+  if(!q){canvas.hidden=true;return}
+  paintQr(canvas.getContext('2d'),q,0,0,canvas.width);
+}
+
+// The picture they save: the same card, drawn at 1080 x 1350.
+function wrap(ctx,text,width){
+  const lines=[];let line='';
+  for(const ch of text){
+    if(ctx.measureText(line+ch).width>width&&line&&!'，。、！？：；」）'.includes(ch)){lines.push(line);line=ch}
+    else line+=ch;
+  }
+  if(line)lines.push(line);
+  return lines;
+}
+function cardImage(){
+  const W=1080,H=1350,c=document.createElement('canvas'),x=c.getContext('2d');
+  const {type}=shown,t=TYPES[type],serif='"Songti TC","Noto Serif TC",serif',sans='"PingFang TC","Microsoft JhengHei",sans-serif';
+  c.width=W;c.height=H;
+  x.fillStyle='#f5f2e8';x.fillRect(0,0,W,H);
+  x.fillStyle='#bfc9ac';x.beginPath();x.roundRect(52,54,W-92,H-92,44);x.fill();
+  x.fillStyle='#22483e';x.beginPath();x.roundRect(40,40,W-92,H-92,44);x.fill();
+  const L=100,R=W-112,width=R-L;
+  x.textBaseline='alphabetic';
+  x.font='bold 28px '+sans;x.fillStyle='#c4d9b0';
+  x.fillText('✳ 搭檔圖鑑',L,128);x.textAlign='right';x.fillText('No.'+no(type)+' / 16',R,128);x.textAlign='left';
+  const size=150,gap=22,colors=['#edb28d','#e5dd93','#b3ccee','#c4d9b0'],radii=[[75,75,6,6],75,[8,82,8,82],16];
+  [...type].forEach((k,i)=>{
+    const tx=L+i*(size+gap),ty=172;
+    x.fillStyle=colors[i];x.beginPath();x.roundRect(tx,ty,size,size,radii[i]);x.fill();
+    x.fillStyle='#253c32';x.font='italic bold 92px Georgia,serif';x.textAlign='center';x.fillText(k,tx+size/2,ty+size/2+32);x.textAlign='left';
+  });
+  x.fillStyle='#f8edb9';x.font='bold 92px '+serif;x.fillText(t.name,L,448);
+  x.font='bold 34px '+sans;
+  let y=512;
+  wrap(x,t.tag,width).forEach(l=>{x.fillText(l,L,y);y+=50});
+  y+=22;
+  const block=(title,text,color)=>{
+    x.font='bold 25px '+sans;x.fillStyle=color;x.fillText(title,L,y);y+=46;
+    x.font='31px '+sans;x.fillStyle='#f0ebd6';
+    wrap(x,text,width).forEach(l=>{x.fillText(l,L,y);y+=47});
+    y+=26;
+  };
+  block('強項',t.power,'#c4d9b0');
+  block('容易踩的坑',t.trap,'#edb28d');
+  x.font='31px '+sans;
+  const guard=wrap(x,'「'+t.guard+'」',width-56),boxH=guard.length*47+86;
+  const boxEnd=y-8+boxH;
+  x.fillStyle='rgba(248,237,185,.12)';x.beginPath();x.roundRect(L-4,y-8,width+8,boxH,18);x.fill();
+  y+=36;x.font='bold 25px '+sans;x.fillStyle='#e5dd93';x.fillText('指揮 AI 時，加這一句',L+24,y);y+=46;
+  x.font='31px '+sans;x.fillStyle='#f8edb9';guard.forEach(l=>{x.fillText(l,L+24,y);y+=47});
+  const bottom=H-52-48,q=location.protocol.startsWith('http')?qrModules(shareUrl()):null,qs=168;
+  if(q){x.fillStyle='#fff';x.beginPath();x.roundRect(R-qs-10,bottom-qs-10,qs+20,qs+20,14);x.fill();paintQr(x,q,R-qs,bottom-qs,qs)}
+  x.font='bold 27px '+sans;x.fillStyle='#f8edb9';
+  x.fillText(q?'掃 QR 碼，拿完整的專屬指令':'搭檔圖鑑｜AI 協作性格測驗',L,bottom-44);
+  x.font='24px '+sans;x.fillStyle='#a9bdaa';
+  x.fillText(q?'搭檔圖鑑｜AI 協作性格測驗':'12 道選擇題，找出你的 AI 搭檔',L,bottom-4);
+  c.dataset.room=Math.round(bottom-qs-10-boxEnd);   // the guard box must end above the QR code
+  return c;
+}
+async function saveCard(){
+  const n=document.querySelector('#notice'),name='搭檔圖鑑-'+shown.type+'.png';
+  const blob=await new Promise(r=>cardImage().toBlob(r,'image/png'));
+  const file=new File([blob],name,{type:'image/png'});
+  if(navigator.canShare&&navigator.canShare({files:[file]})&&matchMedia('(pointer:coarse)').matches){
+    try{await navigator.share({files:[file],title:'我的 AI 搭檔：'+TYPES[shown.type].name});n.textContent='';return}
+    catch(e){if(e.name==='AbortError')return}
+  }
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href),5000);
+  n.textContent='圖片已下載。';
+}
+async function copyText(text,ok,where){
+  const n=document.querySelector(where);
+  try{await navigator.clipboard.writeText(text);n.textContent=ok}
+  catch{
+    const ta=document.createElement('textarea');ta.value=text;ta.style.cssText='position:fixed;opacity:0';document.body.append(ta);ta.select();
+    let did=false;try{did=document.execCommand('copy')}catch{}
+    ta.remove();n.textContent=did?ok:'這個瀏覽器不讓網頁複製，請長按文字自己複製。';
+  }
+}
+function copyPrompt(){copyText(promptText(),'已複製指令，貼給你常用的 AI。','#copied')}
+function copyLink(){copyText(shareUrl(),'已複製連結。','#notice')}
+
+function route(){
+  let m;
+  if(m=/^#r=([01]{12})$/.exec(location.hash)){answers=[...m[1]].map(Number);result()}
+  else if((m=/^#t=([A-Z]{4})$/.exec(location.hash))&&TYPES[m[1]])browse(m[1]);
+  else home();
+}
+addEventListener('hashchange',route);
+route();
+</script>
+</html>
